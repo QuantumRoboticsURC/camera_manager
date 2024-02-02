@@ -17,7 +17,7 @@ class Camera(Node):
 		self.arm_cam_publisher = self.create_publisher(Image,"/arm_cam",10)
 		self.ant_cam_publisher = self.create_publisher(Image,"/ant_cam",10)
 		self.arm_camera = cv2.VideoCapture(0)
-		self.antenna_camera = cv2.VideoCapture(3)
+		self.antenna_camera = cv2.VideoCapture("video2")
 		self.quality = 18
 		self.timer = self.create_timer(0.0001,self.cameras)
 		self.bridge = CvBridge()
