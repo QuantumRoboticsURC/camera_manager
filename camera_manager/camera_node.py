@@ -31,12 +31,16 @@ class Camera(Node):
 		self.get_logger().error("No se encontraron cámaras disponibles.")
 		return None
 
+	def cv2_to_imgmsg(self, image):
+		msg = self.bridge.cv2_to_imgmsg(image, encoding = "bgr8")
+		return msg
+
 	def cv2_to_imgmsg_resized(self, image, scale_percent):
 		width = int(image.shape[1] * scale_percent / 100)
 		height = int(image.shape[0] * scale_percent / 100)
 		dim = (width, height)
-		resized_image = cv2.resize(image, dim, interpolation=cv2.INTER_AREA)
-		msg = self.bridge.cv2_to_imgmsg(resized_image, encoding="bgr8")
+		resized_image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA)
+		msg = self.bridge.cv2_to_imgmsg(resized_image, encoding = "bgr8")
 		return msg
 
 	def cameras(self):
