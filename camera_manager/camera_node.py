@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from std_msgs.msg import Int8
 import time
 import math
 import cv2
@@ -11,6 +12,7 @@ class Camera(Node):
 		super().__init__("Camera_Node")
 		self.arm_cam_publisher = self.create_publisher(Image, "/arm_cam", 10)
 		self.ant_cam_publisher = self.create_publisher(Image, "/ant_cam", 10)
+		self.create_subscription(Int8, "image_quality", self.quality_callback, 1)
 		self.quality = 18
 		self.bridge = CvBridge()
 		self.timer = self.create_timer(0.0001, self.cameras)
@@ -18,7 +20,10 @@ class Camera(Node):
 		# Inicializar cámaras
 		self.arm_camera = self.initialize_camera()
 		self.antenna_camera = self.initialize_camera()
-
+  
+	def quality_callback(self, msg):
+		self.quality = msg.data
+  
 	def initialize_camera(self):
 		num_cameras = 5  # Rango de posibles indices generados
 		for index in range(num_cameras):
