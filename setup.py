@@ -19,7 +19,8 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': ['camera=camera_manager.camera_node:main'
+        'console_scripts': ['camera=camera_manager.camera_node:main',
+                            'single_cam=camera_manager.single_camera:main'
         ],
     },
 )
