@@ -50,6 +50,7 @@ class Camera(Node):
 
     def update_camera(self, msg):
         self.camera = msg.data
+        print(self.camera)
 
     def cameras(self):
         if self.sci_camera1 and self.camera == 0:
