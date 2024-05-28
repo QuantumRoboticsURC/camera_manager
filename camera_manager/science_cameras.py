@@ -12,6 +12,8 @@ class Camera(Node):
         listener_group = ReentrantCallbackGroup()
         self.sci_cam1_publisher = self.create_publisher(Image, "/sci_cam1", 10)
         self.sci_cam2_publisher = self.create_publisher(Image, "/sci_cam2", 10)
+        self.sci_cam3_publisher = self.create_publisher(Image, "/sci_cam3", 10)
+        self.sci_cam4_publisher = self.create_publisher(Image, "/sci_cam4", 10)
         self.create_subscription(Int8, "image_quality", self.quality_callback, 1)
         self.create_subscription(Int8, "/selected_camera", self.update_camera, 1, callback_group=listener_group)
         self.quality = 18
@@ -22,6 +24,8 @@ class Camera(Node):
         # Inicializar cámaras
         self.sci_camera1 = self.initialize_camera()
         self.sci_camera2 = self.initialize_camera()
+        self.sci_camera3 = self.initialize_camera()
+        self.sci_camera4 = self.initialize_camera()
 
     def quality_callback(self, msg):
         self.quality = msg.data
@@ -62,6 +66,14 @@ class Camera(Node):
             ret_sci2, frame_sci2 = self.sci_camera2.read()
             if ret_sci2:
                 self.sci_cam2_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci2, self.quality))
+        elif self.sci_camera3 and self.camera == 2:
+            ret_sci3, frame_sci3 = self.sci_camera3.read()
+            if ret_sci3:
+                self.sci_cam3_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci3, self.quality))
+        elif self.sci_camera4 and self.camera == 3:
+            ret_sci4, frame_sci4 = self.sci_camera4.read()
+            if ret_sci4:
+                self.sci_cam4_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci4, self.quality))
 
 def main(args=None):
     rclpy.init(args=args)
@@ -71,6 +83,10 @@ def main(args=None):
         cameras.sci_camera1.release()
     if cameras.sci_camera2:
         cameras.sci_camera2.release()
+    if cameras.sci_camera3:
+        cameras.sci_camera3.release()
+    if cameras.sci_camera4:
+        cameras.sci_camera4.release()
     cameras.destroy_node()
     rclpy.shutdown()
 

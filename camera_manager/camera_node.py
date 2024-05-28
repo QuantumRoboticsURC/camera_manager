@@ -53,12 +53,12 @@ class Camera(Node):
         print(self.camera)
 
     def cameras(self):
-        if self.arm_camera and self.camera == 2:
+        if self.arm_camera and self.camera == 0:
             ret_arm, frame_arm = self.arm_camera.read()
             if ret_arm:
                 self.arm_cam_publisher.publish(self.cv2_to_imgmsg_resized(frame_arm, self.quality))
 
-        elif self.antenna_camera and self.camera == 3:
+        elif self.antenna_camera and self.camera == 1:
             ret_ant, frame_ant = self.antenna_camera.read()
             if ret_ant:
                 self.ant_cam_publisher.publish(self.cv2_to_imgmsg_resized(frame_ant, self.quality))
