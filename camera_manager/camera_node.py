@@ -56,11 +56,15 @@ class Camera(Node):
         if self.arm_camera and self.camera == 1:
             ret_arm, frame_arm = self.arm_camera.read()
             if ret_arm:
+                print("arm_camera publishing")
                 self.arm_cam_publisher.publish(self.cv2_to_imgmsg_resized(frame_arm, self.quality))
 
         elif self.antenna_camera and self.camera == 2:
             ret_ant, frame_ant = self.antenna_camera.read()
+            print(self.antenna_camera)
+            print(ret_ant)
             if ret_ant:
+                print("Ant cam publishing")
                 self.ant_cam_publisher.publish(self.cv2_to_imgmsg_resized(frame_ant, self.quality))
 
 def main(args=None):
