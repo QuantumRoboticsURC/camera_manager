@@ -10,10 +10,10 @@ class Camera(Node):
     def __init__(self):
         super().__init__("Camera_Node")
         listener_group = ReentrantCallbackGroup()
-        self.sci_cam1_publisher = self.create_publisher(Image, "/sci_cam1", 10)
-        self.sci_cam2_publisher = self.create_publisher(Image, "/sci_cam2", 10)
-        self.sci_cam3_publisher = self.create_publisher(Image, "/sci_cam3", 10)
-        self.sci_cam4_publisher = self.create_publisher(Image, "/sci_cam4", 10)
+        self.sci_cam1_publisher = self.create_publisher(Image, "/arm_cam", 10)
+        self.sci_cam2_publisher = self.create_publisher(Image, "/ant_cam", 10)
+        self.sci_cam3_publisher = self.create_publisher(Image, "/sci_cam1", 10)
+        self.sci_cam4_publisher = self.create_publisher(Image, "/sci_cam2", 10)
         self.create_subscription(Int8, "image_quality", self.quality_callback, 1)
         self.create_subscription(Int8, "/selected_camera", self.update_camera, 1, callback_group=listener_group)
         self.quality = 18
@@ -57,22 +57,26 @@ class Camera(Node):
         print(self.camera)
 
     def cameras(self):
-        if self.sci_camera1 and self.camera == 0:
+        if self.sci_camera1 and self.camera == 1:
             ret_sci1, frame_sci1 = self.sci_camera1.read()
             if ret_sci1:
+                print("First Camera publishing")
                 self.sci_cam1_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci1, self.quality))
 
-        elif self.sci_camera2 and self.camera == 1:
+        elif self.sci_camera2 and self.camera == 2:
             ret_sci2, frame_sci2 = self.sci_camera2.read()
             if ret_sci2:
+                print("Second Camera publishing")
                 self.sci_cam2_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci2, self.quality))
-        elif self.sci_camera3 and self.camera == 2:
+        elif self.sci_camera3 and self.camera == 3:
             ret_sci3, frame_sci3 = self.sci_camera3.read()
             if ret_sci3:
+                print("Third Camera publishing")
                 self.sci_cam3_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci3, self.quality))
-        elif self.sci_camera4 and self.camera == 3:
+        elif self.sci_camera4 and self.camera == 4:
             ret_sci4, frame_sci4 = self.sci_camera4.read()
             if ret_sci4:
+                print("Fourth Camera publishing")
                 self.sci_cam4_publisher.publish(self.cv2_to_imgmsg_resized(frame_sci4, self.quality))
 
 def main(args=None):
@@ -92,3 +96,4 @@ def main(args=None):
 
 if __name__ == "__main__":
     main()
+
